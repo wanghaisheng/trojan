@@ -178,10 +178,15 @@ EOF
 	fi
 	mkdir /usr/src/trojan-cert /usr/src/trojan-temp
 	curl https://get.acme.sh | sh
-	~/.acme.sh/acme.sh  --issue  -d $your_domain  --standalone
-    	~/.acme.sh/acme.sh  --installcert  -d  $your_domain   \
-        --key-file   /usr/src/trojan-cert/private.key \
-        --fullchain-file /usr/src/trojan-cert/fullchain.cer
+	export CF_Key="651ccd26375ac0adc6cbe2ef4aa7cdff3dd2c" 
+        export CF_Email="edwin_uestc@163.com" 
+        ~/.acme.sh/acme.sh  --issue --dns dns_cf -d $your_domain  -k ec-256
+	~/.acme.sh/acme.sh  --installcert -d $your_domain --fullchain-file /usr/src/trojan-cert/fullchain.cer --key-file /usr/src/trojan-cert/private.key --ecc 
+
+#	~/.acme.sh/acme.sh  --issue  -d $your_domain  --standalone
+#    	~/.acme.sh/acme.sh  --installcert  -d  $your_domain   \
+#        --key-file   /usr/src/trojan-cert/private.key \
+#        --fullchain-file /usr/src/trojan-cert/fullchain.cer
 	if test -s /usr/src/trojan-cert/fullchain.cer; then
 	systemctl start nginx
         cd /usr/src
